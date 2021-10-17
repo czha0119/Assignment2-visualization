@@ -1,0 +1,68 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "A bar chart with highlighting on hover and selecting on click. (Inspired by Tableau's interaction style.)",
+     "data": {"url": "https://raw.githubusercontent.com/czha0119/dataset-earthquake/main/2015-2021.csv"},
+     "title": "The number of earthquakes by years",
+     "width": 700,
+    "height": 400,
+    "params": [
+      {
+        "name": "highlight",
+        "select": {"type": "point", "on": "mouseover"}
+      },
+      {"name": "select", "select": "point"}
+    ],
+    "mark": {
+      "type": "bar",
+      
+      "stroke": "black",
+      "cursor": "pointer"
+    },
+    "encoding": {
+      "x": {"timeUnit": "year", "field": "time", "type": "ordinal"},
+      "y": {
+        "aggregate": "count",
+        "type": "quantitative",
+        "title":"Number of Earthquakes"
+      },
+      "color": {
+        "timeUnit":"month",
+        "field": "time",
+        "type": "ordinal",
+         "scale": {"scheme": "tableau20"},
+        
+        "title": "month"
+      },
+       "tooltip": [
+  
+  {"aggregate": "count", "type": "quantitative", "format": ","}, {"timeUnit": "yearmonth","field": "time", "type": "ordinal"},
+   {"field": "type", "type": "nominal"}
+  ],
+      
+      "fillOpacity": {
+        "condition": {"param": "select", "value": 1},
+        "value": 0.3
+      },
+      "strokeWidth": {
+        "condition": [
+          {
+            "param": "select",
+            "empty": false,
+            "value": 2
+          },
+          {
+            "param": "highlight",
+            "empty": false,
+            "value": 1
+          }
+        ],
+        "value": 0
+      }
+    },
+    "config": {
+      "scale": {
+        "bandPaddingInner": 0.2
+      }
+    }
+  }
+  
